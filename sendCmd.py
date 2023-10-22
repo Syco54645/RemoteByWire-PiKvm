@@ -33,7 +33,7 @@ def interactiveMode():
         doSwitch(value)
 
 def doSwitch(value):
-    cmd = b"btn6\n"
+    cmd = b"btn1\n"
     match value:
         case "1":
             cmd = b"btn1\n"
@@ -52,7 +52,7 @@ def doSwitch(value):
         case "8":
             cmd = b"btn8\n"
         case _:
-            cmd = b"btn6\n"
+            cmd = b"btn1\n"
 
     socket.send(cmd)
     message = socket.recv()
@@ -61,11 +61,14 @@ def doSwitch(value):
 def main(argv):
     port = '5555'
     switchNum = ''
-    opts, args = getopt.getopt(argv,"his:p:",["interactive","switch","port"])
+    opts, args = getopt.getopt(argv,"his:p:",["help","interactive","switch=","port="])
 
     for opt, arg in opts:
-        if opt == '-h':
-            print ('test.py -p <port> -s <number>')
+        if opt in ("-h", "--help"):
+            print ('sendCmd.py -p <port> -s <number>\n')
+            print ('-h, --help \t Display this help screen.')
+            print ('-p, --port \t The web port that the daemon is running on. Default is 5555.')
+            print ('-s, --switch \t The number to switch to on the KVM. If this is not supplied then the script will enter interactive mode.')
             sys.exit()
         if opt in ("-p", "--port"):
             port = arg
@@ -84,5 +87,3 @@ def main(argv):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
-
-

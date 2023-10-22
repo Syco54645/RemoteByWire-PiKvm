@@ -31,7 +31,6 @@ ser.timeout = 1
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)
-socket.bind("tcp://*:5555")
 
 def interactiveMode():
     while True:
@@ -40,8 +39,9 @@ def interactiveMode():
         #line = ser.readline().decode('utf-8').rstrip()
         #print(line)
 
-def daemonMode():
-    print("Daemon Started. Waiting for command...\n")
+def daemonMode(port, serialPort):
+    print(f"Daemon Started on tcp://*:%s. Waiting for command..." % port)
+    print(f"Serial Port connected on %s. Ready to send command...\n" % serialPort)
     print("ctrl-c to exit\n")
     while True:
         message = socket.recv()
@@ -80,27 +80,35 @@ def doSwitch(value):
     print(">>> [%s]" % line)
 
 def main(argv):
-    port = 'COM3'
+    serialPort = 'COM3'
+    port = "5555"
     mode = "daemon"
-    opts, args = getopt.getopt(argv,"hip:",["interactive","port"])
+    opts, args = getopt.getopt(argv,"his:p:",["help","interactive","serial=","port="])
 
     for opt, arg in opts:
-        if opt == '-h':
-            print ('test.py -p <port> -s <number>')
+        if opt in ("-h", "--help"):
+            print ('pyRemoteByWireDaemon.py -p <port> -s <number>\n')
+            print ('-h, --help \t Shows this help screen.')
+            print ('-s, --serial \t The serial port for daemon/arduino communication.')
+            print ('-p, --port \t The web port for the daemon. Default is 5555.')
+            print ('-i, --interactive \t Interactive mode bypasses the need of sendCmd. Good for debugging.')
             sys.exit()
+        if opt in ("-s", "--serial"):
+            serialPort = arg
         if opt in ("-p", "--port"):
             port = arg
         if opt in ("-i", "--interactive"):
             mode = "interactive"
-       
-    ser.port = port
+
+    socket.bind(f"tcp://*:%s" % port)
+    ser.port = serialPort
     ser.open()
     ser.reset_input_buffer()
     
     if mode == "interactive":
         interactiveMode()
     else:
-        daemonMode()
+        daemonMode(port, serialPort)
 
     ser.close()
     sys.exit()
