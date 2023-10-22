@@ -10,7 +10,7 @@ So what do you need to have to build one?
 ### Skills
 Basic soldering skills are a must. The most dangerous part is removing the IR receiver. the rest should just be simple soldering.
 
-## Required Hardware
+### Required Hardware
  - Aimos 8 port KVM
  - PiKVM
  - Arduino Nano
