@@ -67,7 +67,37 @@ void setup() {
 }
 
 void loop() {
-  sender.sendNonModulated(btn1, 2);
+  if (Serial.available() > 0) {
+    String data = Serial.readStringUntil('\n');
+    //Serial.print("Received: ");
+    //Serial.println(data);
+    if (data == "btn1") {
+      sender.sendNonModulated(btn1, 2);
+      Serial.println("DONE: btn1");
+    } else if (data == "btn2") {
+      sender.sendNonModulated(btn2, 2);
+      Serial.println("DONE: btn2");
+    } else if (data == "btn3") {
+      sender.sendNonModulated(btn3, 2);
+      Serial.println("DONE: btn3");
+    } else if (data == "btn4") {
+      sender.sendNonModulated(btn4, 2);
+      Serial.println("DONE: btn4");
+    } else if (data == "btn5") {
+      sender.sendNonModulated(btn5, 2);
+      Serial.println("DONE: btn5");
+    } else if (data == "btn6") {
+      sender.sendNonModulated(btn6, 2);
+      Serial.println("DONE: btn6");
+    } else if (data == "btn7") {
+      sender.sendNonModulated(btn7, 2);
+      Serial.println("DONE: btn7");
+    } else if (data == "btn8") {
+      sender.sendNonModulated(btn8, 2);
+      Serial.println("DONE: btn8");
+    }
+  }
+  /*sender.sendNonModulated(btn1, 2);
   Serial.println("Sending btn1");
   delay(2000);
   
@@ -97,5 +127,5 @@ void loop() {
   
   sender.sendNonModulated(btn8, 2);
   Serial.println("Sending btn8");
-  delay(2000);
+  delay(2000);*/
 }
