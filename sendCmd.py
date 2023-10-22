@@ -20,6 +20,9 @@
 import time
 import sys, getopt
 import zmq
+import signal
+
+signal.signal(signal.SIGINT, signal.SIG_DFL); # allow ctrl-c to kill the app
 
 context = zmq.Context()
 socket = context.socket(zmq.REQ)
@@ -28,12 +31,9 @@ def interactiveMode():
     while True:
         value = input("Please enter 1-8: ")
         doSwitch(value)
-        #line = ser.readline().decode('utf-8').rstrip()
-        #print(line)
 
 def doSwitch(value):
     cmd = b"btn6\n"
-    print (type(value))
     match value:
         case "1":
             cmd = b"btn1\n"
@@ -56,7 +56,7 @@ def doSwitch(value):
 
     socket.send(cmd)
     message = socket.recv()
-    print("Received reply [ %s ]" % (message))
+    print(">>>  [%s]" % (message))
 
 def main(argv):
     port = '5555'
@@ -73,16 +73,12 @@ def main(argv):
             mode = "switch"
             switchNum = arg
 
-    socket.connect("tcp://localhost:5555")
+    socket.connect(f"tcp://localhost:%s" % (port))
 
     if switchNum:
         doSwitch(switchNum.replace("btn", ""))
     else:
-        #print ('interactive')
         interactiveMode()
-    
-    print ('port is ', port)
-    print ('switch is ', switchNum)
 
     sys.exit()
 

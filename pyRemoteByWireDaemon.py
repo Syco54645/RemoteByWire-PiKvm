@@ -1,8 +1,29 @@
+#
+# Console Application Daemon to communicate with IrEmulator
+# Copyright (C) 2023 Syco54645
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 #!/usr/bin/env python3
 import serial
 import time
 import sys, getopt
 import zmq
+import signal
+
+signal.signal(signal.SIGINT, signal.SIG_DFL); # allow ctrl-c to kill the app
 
 ser = serial.Serial()
 ser.baudrate = 9600
@@ -20,20 +41,17 @@ def interactiveMode():
         #print(line)
 
 def daemonMode():
-    print("Daemon Started. Waiting for command...")
+    print("Daemon Started. Waiting for command...\n")
+    print("ctrl-c to exit\n")
     while True:
         message = socket.recv()
-        print("Received: %s" % message)
-        #time.sleep(2)
+        print(">>> [%s]" % message)
         doSwitch(message)
         socket.send(b"done %s" % message)
 
 def doSwitch(value):
     ser.reset_output_buffer()
     ser.reset_input_buffer()
-    print (type(value))
-    print ("value is %s" % value)
-    print (type("1"))
     cmd = b"btn1\n"
     if isinstance(value, (bytes, bytearray)):
         cmd = value
@@ -59,7 +77,7 @@ def doSwitch(value):
                 cmd = b"btn1\n"
     ser.write(cmd)
     line = ser.readline().decode('utf-8').rstrip()
-    print(line)
+    print(">>> [%s]" % line)
 
 def main(argv):
     port = 'COM3'

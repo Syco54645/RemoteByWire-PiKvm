@@ -1,6 +1,6 @@
 /*
 * Arduino Application to control an AIMOS 8 port KVM by wire rather than IR LED.
-* Copyright (C) 2023  Syco54645
+* Copyright (C) 2023 Syco54645
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -73,28 +73,28 @@ void loop() {
     //Serial.println(data);
     if (data == "btn1") {
       sender.sendNonModulated(btn1, 2);
-      Serial.println("DONE: btn1");
+      Serial.println("sw: btn1");
     } else if (data == "btn2") {
       sender.sendNonModulated(btn2, 2);
-      Serial.println("DONE: btn2");
+      Serial.println("sw: btn2");
     } else if (data == "btn3") {
       sender.sendNonModulated(btn3, 2);
-      Serial.println("DONE: btn3");
+      Serial.println("sw: btn3");
     } else if (data == "btn4") {
       sender.sendNonModulated(btn4, 2);
-      Serial.println("DONE: btn4");
+      Serial.println("sw: btn4");
     } else if (data == "btn5") {
       sender.sendNonModulated(btn5, 2);
-      Serial.println("DONE: btn5");
+      Serial.println("sw: btn5");
     } else if (data == "btn6") {
       sender.sendNonModulated(btn6, 2);
-      Serial.println("DONE: btn6");
+      Serial.println("sw: btn6");
     } else if (data == "btn7") {
       sender.sendNonModulated(btn7, 2);
-      Serial.println("DONE: btn7");
+      Serial.println("sw: btn7");
     } else if (data == "btn8") {
       sender.sendNonModulated(btn8, 2);
-      Serial.println("DONE: btn8");
+      Serial.println("sw: btn8");
     }
   }
   /*sender.sendNonModulated(btn1, 2);
