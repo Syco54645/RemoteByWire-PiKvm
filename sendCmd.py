@@ -1,28 +1,39 @@
+#
+# Console Application to communicate with pyRemoteByWireDaemon
+# Copyright (C) 2023 Syco54645
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
 #!/usr/bin/env python3
-import serial
 import time
 import sys, getopt
+import zmq
 
-#ser = serial.Serial('COM3', 9600, timeout=1)
-ser = serial.Serial()
-ser.baudrate = 9600
-ser.timeout = 1
-#ser.reset_input_buffer()
+context = zmq.Context()
+socket = context.socket(zmq.REQ)
 
 def interactiveMode():
     while True:
         value = input("Please enter 1-8: ")
         doSwitch(value)
-        line = ser.readline().decode('utf-8').rstrip()
-        print(line)
-
-def manualMode(switchNum):
-    doSwitch(switchNum)
+        #line = ser.readline().decode('utf-8').rstrip()
+        #print(line)
 
 def doSwitch(value):
-    ser.reset_output_buffer()
-    ser.reset_input_buffer()
     cmd = b"btn6\n"
+    print (type(value))
     match value:
         case "1":
             cmd = b"btn1\n"
@@ -37,17 +48,18 @@ def doSwitch(value):
         case "6":
             cmd = b"btn6\n"
         case "7":
-            print ("do this")
             cmd = b"btn7\n"
         case "8":
-            print ("blarg")
             cmd = b"btn8\n"
         case _:
             cmd = b"btn6\n"
-    ser.write(cmd)
+
+    socket.send(cmd)
+    message = socket.recv()
+    print("Received reply [ %s ]" % (message))
 
 def main(argv):
-    port = 'COM3'
+    port = '5555'
     switchNum = ''
     opts, args = getopt.getopt(argv,"his:p:",["interactive","switch","port"])
 
@@ -61,21 +73,17 @@ def main(argv):
             mode = "switch"
             switchNum = arg
 
-    ser.port = port
-    ser.open()
-    ser.reset_input_buffer()
+    socket.connect("tcp://localhost:5555")
+
     if switchNum:
-        time.sleep(2) # 2 second sleep because the arduino resets
-        doSwitch(switchNum)
+        doSwitch(switchNum.replace("btn", ""))
     else:
         #print ('interactive')
         interactiveMode()
     
     print ('port is ', port)
     print ('switch is ', switchNum)
-    
 
-    ser.close()
     sys.exit()
 
 if __name__ == '__main__':
