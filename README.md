@@ -12,7 +12,14 @@ This project consists of three parts.
  - [pyRemoteByWireDaemon.py](https://github.com/Syco54645/RemoteByWire-PiKvm/blob/main/pyRemoteByWireDaemon.py "pyRemoteByWireDaemon.py") - Python script that connects to the Arduino via serial. It waits for a command to be sent to it from the [sendCmd.py](https://github.com/Syco54645/RemoteByWire-PiKvm/blob/main/sendCmd.py "sendCmd.py") script
  - [sendCmd.py](https://github.com/Syco54645/RemoteByWire-PiKvm/blob/main/sendCmd.py "sendCmd.py") - Python script to send commands to [pyRemoteByWireDaemon.py](https://github.com/Syco54645/RemoteByWire-PiKvm/blob/main/pyRemoteByWireDaemon.py "pyRemoteByWireDaemon.py")
 
-Connect the Arduino to the PiKVM via USB, this will give us both power and a serial connection for communication. Once this connection is made
+#### [IrEmulator.ino](https://github.com/Syco54645/RemoteByWire-PiKvm/blob/main/IrEmulator/IrEmulator.ino)
+Flash this to your Arduino. Theroritically this file could be modified to send different signals and work for other KVMs.
+
+#### [pyRemoteByWireDaemon.py](https://github.com/Syco54645/RemoteByWire-PiKvm/blob/main/pyRemoteByWireDaemon.py "pyRemoteByWireDaemon.py")
+`python pyRemoteByWireDaemon.py -s <USB SERIAL> -p 5555`
+
+#### [sendCmd.py](https://github.com/Syco54645/RemoteByWire-PiKvm/blob/main/sendCmd.py "sendCmd.py")
+`python sendCmd.py -p 5555 -s <KVM PORT NUMBER> `
 
 ### Skills
 Basic soldering skills are a must. The most dangerous part is removing the IR receiver. the rest should just be simple soldering.
