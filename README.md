@@ -10,8 +10,17 @@ So what do you need to have to build one?
 ### Skills
 Basic soldering skills are a must. The most dangerous part is removing the IR receiver. the rest should just be simple soldering.
 
-### Required Hardware
- - Aimos 8 port KVM
+### BOM
  - PiKVM
+ - Aimos 8 port KVM
  - Arduino Nano
  - Logic Level Converter
+
+### Building
+This project is relatively simple to build
+ 1. Disassemble the AIMOS KVM and remove the IR receiver
+
+#### Circuit
+Below is a diagram of the circuit. The purple and black output wires connect to the AIMOS board, the purple goes where the output of the IR receiver was and the black goes to ground.
+![RemoteByWire-PiKvm Circuit](https://raw.githubusercontent.com/Syco54645/RemoteByWire-PiKvm/main/RemoteByWire-PiKvm_bb.png)
+
