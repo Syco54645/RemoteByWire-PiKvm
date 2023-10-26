@@ -1,4 +1,5 @@
 
+
 # RemoteByWire-PiKvm
 This project allows the control of an AIMOS 8 Port KVM via the PiKvm system. This was accomplished by replacing the IR receiver with an Arduino. In theory, this should work for other multi-port KVMs with an IR remote.
 
@@ -37,3 +38,93 @@ This project is relatively simple to build
 ### Circuit
 Below is a diagram of the circuit. The purple and black output wires connect to the AIMOS board, the purple goes where the output of the IR receiver was and the black goes to ground.
 ![RemoteByWire-PiKvm Circuit](https://raw.githubusercontent.com/Syco54645/RemoteByWire-PiKvm/main/RemoteByWire-PiKvm_bb.png)
+
+### Pi Setup
+ - rw
+ - pacman -S python-pip
+ - pacman -S python-pyzmq
+ - ls /dev/serial/by-id/
+
+### /etc/kvmd/override.yaml
+
+    kvmd:
+	    ...
+	    gpio:
+	        drivers:
+	            btn1:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 1]
+	            btn2:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 2]
+	            btn3:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 3]
+	            btn4:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 4]
+	            btn5:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 5]
+	            btn6:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 6]
+	            btn7:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 7]
+	            btn8:
+	                type: cmd
+	                cmd: [/usr/bin/python, /usr/local/bin/sendCmd.py, -s, 8]
+	        scheme:
+	            btn1_button:
+	                driver: btn1
+	                pin: 0
+	                mode: output
+	                switch: false
+	            btn2_button:
+	                driver: btn2
+	                pin: 0
+	                mode: output
+	                switch: false
+	            btn3_button:
+	                driver: btn3
+	                pin: 0
+	                mode: output
+	                switch: false
+	            btn4_button:
+	                driver: btn4
+	                pin: 0
+	                mode: output
+	                switch: false
+	            btn5_button:
+	                driver: btn5
+	                pin: 0
+	                mode: output
+	                switch: false
+	            btn6_button:
+	                driver: btn6
+	                pin: 0
+	                mode: output
+	                switch: false
+	            btn7_button:
+	                driver: btn7
+	                pin: 0
+	                mode: output
+	                switch: false
+	            btn8_button:
+	                driver: btn8
+	                pin: 0
+	                mode: output
+	                switch: false
+	        view:
+	            header:
+	                title: Control
+	            table:
+	                 - ["btn1_button|confirm|1"]
+	                 - ["btn2_button|confirm|2"]
+	                 - ["btn3_button|confirm|3"]
+	                 - ["btn4_button|confirm|4"]
+	                 - ["btn5_button|confirm|5"]
+	                 - ["btn6_button|confirm|6"]
+	                 - ["btn7_button|confirm|7"]
+	                 - ["btn8_button|confirm|8"]
