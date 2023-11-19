@@ -47,7 +47,7 @@ Below is a diagram of the circuit. The purple and black output wires connect to 
  - ls /dev/serial/by-id/
 
 ### /etc/kvmd/override.yaml
-
+```
     kvmd:
         ...
         gpio:
@@ -129,4 +129,4 @@ Below is a diagram of the circuit. The purple and black output wires connect to 
                      - ["btn6_button|Port 6"]
                      - ["btn7_button|Port 7"]
                      - ["btn8_button|Port 8"]
-
+```
